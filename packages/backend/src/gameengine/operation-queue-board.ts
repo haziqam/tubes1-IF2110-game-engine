@@ -56,8 +56,20 @@ export class OperationQueueBoard extends Board {
     const event = new OperationQueueJoinEvent(bot, this);
     return new Promise((resolve, reject) => {
       this.opQueue.push(event, (err) => {
+        console.log("=================================");
+        console.log(
+          "backend/src/gameengine/operation-queue-boards.ts at line 61",
+        );
+        console.log(
+          `err: ${err}, err instanceof TypeError: ${err instanceof TypeError}`,
+        );
+        console.log("=================================");
         if (err) {
-          resolve(false);
+          if (err instanceof TypeError) {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
         } else {
           resolve(true);
         }
@@ -72,9 +84,21 @@ export class OperationQueueBoard extends Board {
   public async enqueueMove(bot: IBot, delta: Position): Promise<boolean> {
     const event = new OperationQueueMoveEvent(bot, this, delta);
     return new Promise((resolve, reject) => {
-      this.opQueue.push(event, (res) => {
-        if (res) {
-          resolve(false);
+      this.opQueue.push(event, (err) => {
+        console.log("=================================");
+        console.log(
+          "backend/src/gameengine/operation-queue-boards.ts at line 77",
+        );
+        console.log(
+          `err: ${err}, err instanceof TypeError: ${err instanceof TypeError}`,
+        );
+        console.log("=================================");
+        if (err) {
+          if (err instanceof TypeError) {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
         } else {
           resolve(true);
         }
@@ -103,6 +127,12 @@ export class OperationQueueMoveEvent extends OperationQueueEvent {
   }
 
   run() {
+    console.log("=================================");
+    console.log("backend/src/gameengine/operation-queue-boards.ts at line 113");
+    console.log(
+      `this.bot.name: ${this.bot.name}, this.delta: ${this.delta.x}, ${this.delta.y}`,
+    );
+    console.log("=================================");
     return this.board.move(this.bot, this.delta);
   }
 }

@@ -216,6 +216,11 @@ export class BoardsService {
       this.directionToDelta(direction),
     );
 
+    console.log("=================================");
+    console.log("backend/src/services/bots.service.ts at line 220");
+    console.log(`Result: ${result}`);
+    console.log("=================================");
+
     if (!result) {
       throw new ForbiddenError("Move not legal");
     }

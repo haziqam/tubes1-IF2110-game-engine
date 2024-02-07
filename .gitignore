@@ -31,3 +31,4 @@ __pycache__
 node_modules/
 **/*.tsbuildinfo
 **/.env
+.yarn/cache/
