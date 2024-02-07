@@ -1,3 +1,6 @@
+from .models import Position
+
+
 def clamp(n, smallest, largest):
     return max(smallest, min(n, largest))
 
@@ -10,5 +13,5 @@ def get_direction(current_x, current_y, dest_x, dest_y):
     return (delta_x, delta_y)
 
 
-def position_equals(a, b):
-    return a["x"] == b["x"] and a["y"] == b["y"]
+def position_equals(a: Position, b: Position):
+    return a.x == b.x and a.y == b.y
