@@ -31,14 +31,12 @@ group.add_argument(
     help="A bot token to use when running using an existing bot",
     action="store",
 )
-group.add_argument(
-    "--name", help="The name of the bot to register", action="store")
+group.add_argument("--name", help="The name of the bot to register", action="store")
+parser.add_argument("--email", help="The email of the bot to register", action="store")
 parser.add_argument(
-    "--email", help="The email of the bot to register", action="store")
-parser.add_argument(
-    "--password", help="The password of the bot to register", action="store")
-parser.add_argument(
-    "--team", help="The team of the bot to register", action="store")
+    "--password", help="The password of the bot to register", action="store"
+)
+parser.add_argument("--team", help="The team of the bot to register", action="store")
 parser.add_argument("--board", help="Id of the board to join", action="store")
 parser.add_argument(
     "--time-factor",
@@ -74,9 +72,7 @@ if not args.token:
     if bot:
         print("")
         print(
-            Style.BRIGHT
-            + "Bot registered. Token: {}".format(bot.id)
-            + Style.RESET_ALL
+            Style.BRIGHT + "Bot registered. Token: {}".format(bot.id) + Style.RESET_ALL
         )
         args.token = bot.id
         with open(".token-" + bot.name, "w") as f:
@@ -111,7 +107,8 @@ bot_logic = logic_class()
 # Find a board to join
 #
 ###############################################################################
-current_board_id = args.board
+current_board_id = int(args.board)
+
 if not current_board_id:
     # List active boards to find one we can join if we haven't specified one
     boards = board_handler.list_boards()
@@ -153,12 +150,25 @@ move_delay = board.minimum_delay_between_moves / 1000
 while True:
     # Find our info among the bots on the board
     board_bot = board.get_bot(bot)
+    if not board_bot:
+        # Managed to get game over
+        break
 
     # Calculate next move
-    delta_x, delta_y = bot_logic.next_move(board_bot, board)
+    # delta_x, delta_y = bot_logic.next_move(board_bot, board)
+    delta_x, delta_y = (1, 0)
+    if not board.is_valid_move(board_bot.position, delta_x, delta_y):
+        print("Warn: Invalid move will be ignored")
+        sleep(1)
+        continue
 
-    # Try to perform move
-    board = bot_handler.move(bot.id, current_board_id, delta_x, delta_y)
+    try:
+        # Try to perform move
+        board = bot_handler.move(bot.id, current_board_id, delta_x, delta_y)
+    except Exception as e:
+        print(e)
+        break
+
     if not board:
         # Read new board state
         board = board_handler.get_board(current_board_id)
@@ -173,13 +183,10 @@ while True:
     # sleep(move_delay * time_factor)
     sleep(1)
 
+
 ###############################################################################
 #
 # Game over!
 #
 ###############################################################################
 print("Game over!")
-print("You played using the following token:")
-print(Style.BRIGHT + bot.bot_token + Style.RESET_ALL)
-print("Restart bot to run again. Use the following command:")
-print("{} --token={}".format(sys.argv[0], bot.bot_token))

@@ -8,6 +8,7 @@ class Bot:
     email: str
     id: str
 
+
 @dataclass
 class Position:
     y: int
@@ -15,8 +16,7 @@ class Position:
 
 
 @dataclass
-class Base(Position):
-    ...
+class Base(Position): ...
 
 
 @dataclass
@@ -31,7 +31,6 @@ class Properties:
     milliseconds_left: Optional[int] = None
     time_joined: Optional[str] = None
     base: Optional[Base] = None
-
 
 
 @dataclass
@@ -81,3 +80,20 @@ class Board:
             if b.properties.name == bot.name:
                 return b
         return None
+
+    def is_valid_move(
+        self, current_position: Position, delta_x: int, delta_y: int
+    ) -> bool:
+        if not (-1 <= delta_x <= 1) or not (-1 <= delta_y <= 1):
+            return False
+
+        if delta_x == delta_y:
+            return False
+
+        if not (0 <= current_position.x + delta_x < self.width):
+            return False
+
+        if not (0 <= current_position.y + delta_y < self.height):
+            return False
+
+        return True

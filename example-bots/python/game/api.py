@@ -27,20 +27,28 @@ class Api:
         )
         func = getattr(requests, method)
         headers = {"Content-Type": "application/json"}
-        req = func(self._get_url(endpoint),
-                   headers=headers, data=json.dumps(body))
-        print("<<< {} {}".format(req.status_code, req.text))
-        return req
+        res = func(self._get_url(endpoint), headers=headers, data=json.dumps(body))
+        if res.status_code == 200:
+            print("<<< {} OK".format(res.status_code))
+        else:
+            print("<<< {} {}".format(res.status_code, res.text))
+        return res
 
     def bots_get(self, bot_token: str) -> Optional[Bot]:
         response = self._req("/bots/{}".format(bot_token), "get", {})
-        data, status =  self._return_response_and_status(response)
+        data, status = self._return_response_and_status(response)
         if status == 200:
             return from_dict(Bot, data)
         return None
 
-    def bots_register(self, name: str, email: str, password: str, team: str) -> Optional[Bot]:
-        response = self._req("/bots", "post", {"email": email, "name": name, "password": password, "team": team})
+    def bots_register(
+        self, name: str, email: str, password: str, team: str
+    ) -> Optional[Bot]:
+        response = self._req(
+            "/bots",
+            "post",
+            {"email": email, "name": name, "password": password, "team": team},
+        )
         resp, status = self._return_response_and_status(response)
         if status == 200:
             return from_dict(Bot, resp)
@@ -53,20 +61,19 @@ class Api:
             return [from_dict(Board, board) for board in resp]
         return None
 
-
     def bots_join(self, bot_token: str, board_id: int) -> bool:
         response = self._req(
             f"/bots/{bot_token}/join", "post", {"preferredBoardId": board_id}
         )
 
-        resp, status =  self._return_response_and_status(response)
+        resp, status = self._return_response_and_status(response)
         if status == 200:
             return True
         return False
 
     def boards_get(self, board_id: str) -> Optional[Board]:
         response = self._req("/boards/{}".format(board_id), "get", {})
-        resp, status =  self._return_response_and_status(response)
+        resp, status = self._return_response_and_status(response)
         if status == 200:
             return from_dict(Board, resp)
         return None
@@ -77,12 +84,14 @@ class Api:
             "post",
             {"direction": direction},
         )
-        resp, status =  self._return_response_and_status(response)
+        resp, status = self._return_response_and_status(response)
         if status == 200:
             return from_dict(Board, resp)
         return None
 
-    def _return_response_and_status(self, response: Response) -> Tuple[Union[dict, List], int]:
+    def _return_response_and_status(
+        self, response: Response
+    ) -> Tuple[Union[dict, List], int]:
         resp = response.json()
 
         response_data = resp.get("data") if isinstance(resp, dict) else resp
