@@ -10,7 +10,7 @@
     "nodemon": "npx nodemon",
     "start:backend": "cd packages/backend && npm run start:dev",
     "start:frontend": "cd packages/frontend && npm run dev",
-    "start": "npm run support && concurrently \"npm run start:backend\" \"npm run start:frontend\" \"npm run nodemon\"",
+    "start": "npm run support && concurrently \"npm run start:backend\" \"npm run start:frontend\"",
     "support": "docker-compose up -d database",
     "postinstall": "husky install"
   },
