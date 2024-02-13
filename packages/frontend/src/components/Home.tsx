@@ -15,14 +15,11 @@ export const Home = () => {
 
   useEffect(() => {
     if (started) {
-      bots.forEach((bot) =>
-        // console.log(`Name: ${bot.name}, Time left(ms): ${bot.millisecondsLeft}`),
-        {
-          if (bot.millisecondsLeft < 1000) {
-            setFinalScores({ ...finalScores, [bot.name]: bot.score });
-          }
-        },
-      );
+      bots.forEach((bot) => {
+        if (bot.millisecondsLeft < 1000) {
+          setFinalScores({ ...finalScores, [bot.name]: bot.score });
+        }
+      });
 
       if (bots.length == 0) {
         console.log(finalScores);
