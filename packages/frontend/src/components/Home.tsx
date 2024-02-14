@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useBoard } from '../hooks/useBoard';
 import { Board } from './Board';
+import { BotScoreData, ScoreTable } from './ScoreTable';
 import { SideMenu } from './SideMenu';
 
 export const Home = () => {
@@ -14,20 +15,16 @@ export const Home = () => {
   };
 
   useEffect(() => {
-    if (started) {
-      bots.forEach((bot) =>
-        // console.log(`Name: ${bot.name}, Time left(ms): ${bot.millisecondsLeft}`),
-        {
-          if (bot.millisecondsLeft < 1000) {
-            setFinalScores({ ...finalScores, [bot.name]: bot.score });
-          }
-        },
-      );
-
-      if (bots.length == 0) {
-        console.log(finalScores);
-        setStarted(false);
+    bots.forEach((bot) => {
+      if (bot.millisecondsLeft < 5000) {
+        // console.log('final score updated');
+        setFinalScores({ ...finalScores, [bot.name]: bot.score });
       }
+    });
+
+    if (started && bots.length == 0) {
+      console.log(finalScores);
+      setStarted(false);
     } else {
       if (bots.length > 0) {
         setStarted(true);
@@ -42,6 +39,17 @@ export const Home = () => {
 
         <SideMenu bots={bots} boardId={boardId} onBoardChange={onBoardChange} />
       </div>
+      <ScoreTable botScores={getBotScoreData(finalScores)} />
     </div>
   );
 };
+
+function getBotScoreData(finalScores: {
+  [key: string]: number;
+}): BotScoreData[] {
+  const botScoreData: BotScoreData[] = [];
+  for (const key in finalScores) {
+    botScoreData.push({ name: key, score: finalScores[key] });
+  }
+  return botScoreData;
+}
