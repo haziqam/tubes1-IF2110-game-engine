@@ -19,7 +19,7 @@ export const Board: FC<BoardProps> = memo((props) => {
   return (
     <div
       id="test"
-      className="items-center flex flex-col relative m-auto border-t w-full lg:w-80%"
+      className="items-center flex flex-col relative m-auto border-t w-[85vh] h-[85vh] lg:w-80%"
       ref={containerRef}
       style={{ maxWidth: maxWidth.maxWidth }}
     >

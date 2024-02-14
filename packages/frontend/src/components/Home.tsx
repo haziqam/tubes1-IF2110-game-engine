@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useBoard } from '../hooks/useBoard';
 import { Board } from './Board';
-import { BotScoreData, ScoreTable } from './ScoreTable';
+import { BotScoreData } from './ScoreTable';
 import { SideMenu } from './SideMenu';
 
 export const Home = () => {
@@ -22,12 +22,15 @@ export const Home = () => {
       }
     });
 
-    if (started && bots.length == 0) {
-      console.log(finalScores);
-      setStarted(false);
+    if (started) {
+      if (bots.length == 0) {
+        console.log(finalScores);
+        setStarted(false);
+      }
     } else {
       if (bots.length > 0) {
         setStarted(true);
+        setFinalScores({});
       }
     }
   }, [bots]);
@@ -36,10 +39,13 @@ export const Home = () => {
     <div className="bg-gray-50 dark:bg-gray-800 w-screen min-h-[70vh] flex flex-col my-5">
       <div className="flex-1 grid grid-cols lg:grid-cols-[1fr_30%] mx-4 gap-4 lg:mx-14 lg:p-0">
         <Board board={board} />
-
-        <SideMenu bots={bots} boardId={boardId} onBoardChange={onBoardChange} />
+        <SideMenu
+          bots={bots}
+          boardId={boardId}
+          onBoardChange={onBoardChange}
+          botScores={getBotScoreData(finalScores)}
+        />
       </div>
-      <ScoreTable botScores={getBotScoreData(finalScores)} />
     </div>
   );
 };

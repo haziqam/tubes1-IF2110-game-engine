@@ -2,19 +2,20 @@ import { BotGameObjectProperties } from '@etimo/diamonds2-types';
 import React, { FC, memo, useState } from 'react';
 import useFetch from '../../hooks/useFetch';
 import { BoardPicker } from '../BoardPicker';
-import { HighScoreTable } from '../HighScoreTable';
 import { PlayerTable } from '../PlayerTable';
 import { Rules } from '../Rules';
+import { BotScoreData, ScoreTable } from '../ScoreTable';
 import { SeasonPicker } from '../SeasonPicker';
 
 type SideMenuProps = {
   boardId: number;
   onBoardChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   bots: BotGameObjectProperties[];
+  botScores: BotScoreData[];
 };
 
 export const SideMenu: FC<SideMenuProps> = memo((props) => {
-  const { boardId, onBoardChange, bots } = props;
+  const { boardId, onBoardChange, bots, botScores } = props;
   const { response: currentSeason } = useFetch('api/seasons/current', '0');
   const offSeasonId = '00000000-0000-0000-0000-000000000000';
 
@@ -55,7 +56,7 @@ export const SideMenu: FC<SideMenuProps> = memo((props) => {
       </div>
 
       <div>
-        <HighScoreTable seasonId={selectedSeasonId} />
+        <ScoreTable botScores={botScores} />
       </div>
 
       <Rules
