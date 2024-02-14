@@ -32,3 +32,4 @@ node_modules/
 **/*.tsbuildinfo
 **/.env
 .yarn/cache/
+.yarn/install-state.gz
