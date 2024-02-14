@@ -11,45 +11,47 @@ Diamonds is a programming challenge. Program a bot and compete to get the highes
 
 If you find a bug or has a suggestion for improvement you are more than welcome to [submit an issue](https://github.com/Etimo/diamonds2/issues/new) or [pull request](https://github.com/Etimo/diamonds2/compare)!
 
-## Development 💻
+## How to run 💻
 
-1. Install dependencies
+1. Clone this repository and move to the root of this project's directory
 
-```sh
+```
+git clone https://github.com/haziqam/tubes1-IF2110-game-engine.git
+cd ./tubes1-IF2110-game-engine
+
+```
+
+2. Install dependencies
+
+```
 yarn
 ```
 
-2. Setup default environment variables
+3. Setup default environment variables
 
-```sh
-npm run env
+```
+./scripts/copy-env.bat
 ```
 
-3. Setup local database
+4. Setup local database
 
-Either
-
-```sh
-npm run init-db
+```
+docker compose up -d database
 ```
 
-or
-
-```sh
-npm run support
-# Wait for db to start and navigate to packages/backend
-cd packages/backend
-# Install prisma
-yarn install
-# Update db schema
-npx prisma db push
-# Seed the database
-npx prisma db seed
+```
+./scripts/setup-db-prisma.bat
 ```
 
-4. Start everything
+5. Build
 
-```sh
+```
+npm run build
+```
+
+6. Start
+
+```
 npm run start
 ```
 
