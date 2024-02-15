@@ -2,59 +2,80 @@
 
 # 💎 Etimo Diamonds 2
 
-Diamonds is a programming challenge. Program a bot and compete to get the highest score.
+Diamonds is a programming challenge. Program a bot and compete to get the highest score. For more information:
 
-## Want to play? 🕹
+- [Project Specification](https://docs.google.com/document/d/13cbmMVXviyu8eKQ6heqgDzt4JNNMeAZO/edit)
+- [Get Started with Diamonds](https://docs.google.com/document/d/1L92Axb89yIkom0b24D350Z1QAr8rujvHof7-kXRAp7c/edit)
 
-- Read the [game rules and how to get started](RULES.md).
-- Try the api using Swagger either [locally](http://localhost:3000/docs) or [live](http://diamonds.etimo.se/docs/)
-
-If you find a bug or has a suggestion for improvement you are more than welcome to [submit an issue](https://github.com/Etimo/diamonds2/issues/new) or [pull request](https://github.com/Etimo/diamonds2/compare)!
-
-## How to run 💻
+## How to build 🔨
 
 1. Clone this repository and move to the root of this project's directory
 
-```
-git clone https://github.com/haziqam/tubes1-IF2110-game-engine.git
-cd ./tubes1-IF2110-game-engine
-
-```
+   ```
+   git clone https://github.com/haziqam/tubes1-IF2110-game-engine.git
+   cd ./tubes1-IF2110-game-engine
+   ```
 
 2. Install dependencies
 
-```
-yarn
-```
+   ```
+   yarn
+   ```
 
 3. Setup default environment variables
 
-```
-./scripts/copy-env.bat
-```
+   For windows
+
+   ```
+   ./scripts/copy-env.bat
+   ```
+
+   For Linux /(possibly) macOS
+
+   ```
+   ./scripts/copy-env.sh
+   ```
 
 4. Setup local database
 
-```
-docker compose up -d database
-```
+   ```
+   docker compose up -d database
+   ```
 
-```
-./scripts/setup-db-prisma.bat
-```
+   For windows
+
+   ```
+   ./scripts/setup-db-prisma.bat
+   ```
+
+   For Linux /(possibly) macOS
+
+   ```
+   ./scripts/setup-db-prisma.sh
+   ```
 
 5. Build
 
-```
-npm run build
-```
+   ```
+   npm run build
+   ```
 
-6. Start
+   #### Note: For Linux/macOS, make sure to change the permission of the shell scripts to enable executing the script
 
-```
-npm run start
-```
+## How to Run 💻
+
+    ```
+    npm run start
+    ```
 
 Frontend: http://localhost:8082
 
-Swagger: http://localhost:3000/docs
+Swagger (API docs): http://localhost:3000/docs
+
+## Credits 🪙
+
+This repository is adapted from https://github.com/Etimo/diamonds2
+
+Some code in this repository is adjusted to fix some issues in the original repository and to adapt to the requirements of Algorithm Strategies course (IF2211), Informatics Undergraduate Program, ITB.
+
+©️ All rights and credits reserved to [Etimo](https://github.com/Etimo)
