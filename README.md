@@ -64,9 +64,9 @@ Diamonds is a programming challenge. Program a bot and compete to get the highes
 
 ## How to Run 💻
 
-    ```
-    npm run start
-    ```
+```
+npm run start
+```
 
 Frontend: http://localhost:8082
 
