@@ -119,13 +119,6 @@ export class Board {
       (b) => b.name === bot.name,
     );
 
-    console.log("=================================");
-    console.log("backend/src/gameengine/board.ts at line 123");
-    console.log(
-      `bot.name: ${bot.name}, botGameObject.name: ${botGameObject?.name}`,
-    );
-    console.log("=================================");
-
     if (botGameObject) {
       const position = botGameObject.position;
       position.x = position.x + delta.x;
@@ -299,10 +292,6 @@ export class Board {
   ): boolean {
     // Check if we can leave the current position
     if (!(skipLeaveCheck || this.canGameObjectLeave(gameObject, dest))) {
-      console.log("=================================");
-      console.log("backend/src/gameengine/board.ts at line 303");
-      console.log("returns false");
-      console.log("=================================");
       return false;
     }
 
@@ -311,10 +300,6 @@ export class Board {
       this.destinationIsOutOfBounds(dest) ||
       !(skipEnterCheck || this.canGameObjectEnter(gameObject, dest))
     ) {
-      console.log("=================================");
-      console.log("backend/src/gameengine/board.ts at line 311");
-      console.log("returns false");
-      console.log("=================================");
       return false;
     }
 
@@ -329,11 +314,6 @@ export class Board {
     gameObject.position = dest;
 
     gameObjectsDest.forEach((g) => g.onGameObjectEntered(gameObject, this));
-
-    console.log("=================================");
-    console.log("backend/src/gameengine/board.ts at line 326");
-    console.log("returns true");
-    console.log("=================================");
 
     return true;
   }
