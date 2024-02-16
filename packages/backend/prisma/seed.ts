@@ -54,7 +54,7 @@ const main = async () => {
           teleporters: 1,
           minimumDelayBetweenMoves: 100,
           teleportRelocation: 30,
-          dummyBots: 2,
+          dummyBots: 0,
         },
       },
     },
