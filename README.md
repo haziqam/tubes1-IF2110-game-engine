@@ -33,6 +33,7 @@ Diamonds is a programming challenge. Program a bot and compete to get the highes
    For Linux /(possibly) macOS
 
    ```
+   chmod +x ./scripts/copy-env.sh
    ./scripts/copy-env.sh
    ```
 
@@ -51,6 +52,7 @@ Diamonds is a programming challenge. Program a bot and compete to get the highes
    For Linux /(possibly) macOS
 
    ```
+   chmod +x ./scripts/setup-db-prisma.sh
    ./scripts/setup-db-prisma.sh
    ```
 
@@ -59,8 +61,6 @@ Diamonds is a programming challenge. Program a bot and compete to get the highes
    ```
    npm run build
    ```
-
-   #### Note: For Linux/macOS, make sure to change the permission of the shell scripts to enable executing the script
 
 ## How to Run 💻
 
