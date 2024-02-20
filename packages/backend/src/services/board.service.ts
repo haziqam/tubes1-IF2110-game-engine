@@ -65,7 +65,6 @@ export class BoardsService {
 
     const fixBoard = (board: OperationQueueBoard) =>
       board.registerSessionFinishedCallback(async (bot: BotGameObject) => {
-        console.log(`Kepanggil, id bot: ${bot.botId}`);
         const currentSeason = await this.seasonsService.getCurrentSeason();
         // const better = await this.highscoresService.addOrUpdate({
         //   score: bot.score,
