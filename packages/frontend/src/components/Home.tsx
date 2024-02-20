@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useBoard } from '../hooks/useBoard';
 import { Board } from './Board';
@@ -9,21 +10,40 @@ export const Home = () => {
   const { board, bots } = useBoard(boardId, 250);
   const [finalScores, setFinalScores] = useState({});
   const [started, setStarted] = useState(false);
+  const [botNames, setBotNames] = useState<Set<string>>(new Set());
 
   const onBoardChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setBoardId(parseInt(event.target.value));
   };
 
   useEffect(() => {
+    bots.forEach((bot) => {
+      if (!botNames.has(bot.name)) {
+        setBotNames(new Set([...botNames, bot.name]));
+      }
+    });
+
     if (started) {
       if (bots.length == 0) {
-        console.log(finalScores);
         setStarted(false);
+        const newFinalScore: { [key: string]: number } = {};
+        for (const botName of [...botNames]) {
+          const url = encodeURI(
+            `/api/recordings/score/last?botName=${botName}`,
+          );
+          axios.get<number>(url).then((response) => {
+            const score = response.data;
+            console.log(`Bot name: ${botName}, bot score: ${score}`);
+            newFinalScore[botName] = score;
+          });
+        }
+        setFinalScores(newFinalScore);
       }
     } else {
       if (bots.length > 0) {
         setStarted(true);
         setFinalScores({});
+        setBotNames(new Set());
       }
     }
   }, [bots]);
@@ -50,5 +70,6 @@ function getBotScoreData(finalScores: {
   for (const key in finalScores) {
     botScoreData.push({ name: key, score: finalScores[key] });
   }
+  botScoreData.sort((a, b) => b.score - a.score);
   return botScoreData;
 }

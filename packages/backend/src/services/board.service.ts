@@ -67,11 +67,11 @@ export class BoardsService {
       board.registerSessionFinishedCallback(async (bot: BotGameObject) => {
         console.log(`Kepanggil, id bot: ${bot.botId}`);
         const currentSeason = await this.seasonsService.getCurrentSeason();
-        const better = await this.highscoresService.addOrUpdate({
-          score: bot.score,
-          seasonId: currentSeason!.id,
-          botId: bot.botId,
-        });
+        // const better = await this.highscoresService.addOrUpdate({
+        //   score: bot.score,
+        //   seasonId: currentSeason!.id,
+        //   botId: bot.botId,
+        // });
         this.recordingsService.save({
           board: board.getId(),
           botId: bot.botId,
