@@ -65,20 +65,19 @@ export class BoardsService {
 
     const fixBoard = (board: OperationQueueBoard) =>
       board.registerSessionFinishedCallback(async (bot: BotGameObject) => {
+        console.log(`Kepanggil, id bot: ${bot.botId}`);
         const currentSeason = await this.seasonsService.getCurrentSeason();
         const better = await this.highscoresService.addOrUpdate({
           score: bot.score,
           seasonId: currentSeason!.id,
           botId: bot.botId,
         });
-        if (better) {
-          this.recordingsService.save({
-            board: board.getId(),
-            botId: bot.botId,
-            score: bot.score,
-            seasonId: currentSeason!.id,
-          });
-        }
+        this.recordingsService.save({
+          board: board.getId(),
+          botId: bot.botId,
+          score: bot.score,
+          seasonId: currentSeason!.id,
+        });
       });
 
     this.boards.forEach(fixBoard);
@@ -229,12 +228,12 @@ export class BoardsService {
       );
     });
     const botScore = (botDto?.properties as BotGameObjectProperties).score;
-    console.log("========================================================");
-    console.log(
-      "Location: packages/backend/src/services/board.service.ts at line 233",
-    );
-    console.log(`Id: ${botId}, score: ${botScore}`);
-    console.log("========================================================");
+    // console.log("========================================================");
+    // console.log(
+    //   "Location: packages/backend/src/services/board.service.ts at line 233",
+    // );
+    // console.log(`Id: ${botId}, score: ${botScore}`);
+    // console.log("========================================================");
 
     return boardDto;
   }

@@ -15,13 +15,6 @@ export const Home = () => {
   };
 
   useEffect(() => {
-    bots.forEach((bot) => {
-      if (bot.millisecondsLeft < 5000) {
-        // console.log('final score updated');
-        setFinalScores({ ...finalScores, [bot.name]: bot.score });
-      }
-    });
-
     if (started) {
       if (bots.length == 0) {
         console.log(finalScores);
