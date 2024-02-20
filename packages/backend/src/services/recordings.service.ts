@@ -117,4 +117,8 @@ export class RecordingsService {
 
     return lastScore;
   }
+
+  public async reset() {
+    this.repo.reset();
+  }
 }

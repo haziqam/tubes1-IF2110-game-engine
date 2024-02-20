@@ -71,4 +71,8 @@ export class RecordingsRepository {
       })
     )?.score;
   }
+
+  public async reset() {
+    await this.prisma.recording.deleteMany();
+  }
 }

@@ -171,6 +171,7 @@ export class BoardsService {
     if (!result) {
       throw new ConflictError("Board full");
     }
+    this.recordingsService.reset();
     return this.returnAndSaveDto(board);
   }
 
