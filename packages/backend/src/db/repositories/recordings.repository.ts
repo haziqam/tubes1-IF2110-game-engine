@@ -62,4 +62,17 @@ export class RecordingsRepository {
       },
     });
   }
+
+  public async getLastScore(botId: string): Promise<number | undefined> {
+    return (
+      await this.prisma.recording.findFirst({
+        where: { botId: botId },
+        orderBy: [{ createTimeStamp: "desc" }],
+      })
+    )?.score;
+  }
+
+  public async reset() {
+    await this.prisma.recording.deleteMany();
+  }
 }

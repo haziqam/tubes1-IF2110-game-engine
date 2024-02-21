@@ -1,4 +1,4 @@
-import { Position } from "@etimo/diamonds2-types";
+import { BotGameObjectProperties, Position } from "@etimo/diamonds2-types";
 import { Inject, Injectable, Scope } from "@nestjs/common";
 import { MoveDirection } from "../enums";
 import {
@@ -66,19 +66,17 @@ export class BoardsService {
     const fixBoard = (board: OperationQueueBoard) =>
       board.registerSessionFinishedCallback(async (bot: BotGameObject) => {
         const currentSeason = await this.seasonsService.getCurrentSeason();
-        const better = await this.highscoresService.addOrUpdate({
+        // const better = await this.highscoresService.addOrUpdate({
+        //   score: bot.score,
+        //   seasonId: currentSeason!.id,
+        //   botId: bot.botId,
+        // });
+        this.recordingsService.save({
+          board: board.getId(),
+          botId: bot.botId,
           score: bot.score,
           seasonId: currentSeason!.id,
-          botId: bot.botId,
         });
-        if (better) {
-          this.recordingsService.save({
-            board: board.getId(),
-            botId: bot.botId,
-            score: bot.score,
-            seasonId: currentSeason!.id,
-          });
-        }
       });
 
     this.boards.forEach(fixBoard);
@@ -173,6 +171,7 @@ export class BoardsService {
     if (!result) {
       throw new ConflictError("Board full");
     }
+    this.recordingsService.reset();
     return this.returnAndSaveDto(board);
   }
 
@@ -220,7 +219,23 @@ export class BoardsService {
       throw new ForbiddenError("Move not legal");
     }
 
-    return this.returnAndSaveDto(board);
+    const boardDto = this.returnAndSaveDto(board);
+    const botName = (await this.botsService.get(botId))!.name;
+    const botDto = boardDto.gameObjects.find((el) => {
+      return (
+        el.type === "BotGameObject" &&
+        (el.properties as BotGameObjectProperties).name === botName
+      );
+    });
+    const botScore = (botDto?.properties as BotGameObjectProperties).score;
+    // console.log("========================================================");
+    // console.log(
+    //   "Location: packages/backend/src/services/board.service.ts at line 233",
+    // );
+    // console.log(`Id: ${botId}, score: ${botScore}`);
+    // console.log("========================================================");
+
+    return boardDto;
   }
 
   private moveIsRateLimited(board: OperationQueueBoard, bot: IBot) {

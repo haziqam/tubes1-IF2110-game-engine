@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { RecordingsRepository } from "../db";
+import { BotRegistrationsRepository, RecordingsRepository } from "../db";
 import { NotFoundError } from "../errors";
 import { CustomLogger } from "../logger";
 import { RecordingListDto, RecordingPublicDto } from "../models";
@@ -13,6 +13,7 @@ export class RecordingsService {
   constructor(
     private readonly repo: RecordingsRepository,
     private logger: CustomLogger,
+    private botsRepo: BotRegistrationsRepository,
   ) {}
 
   setup(numberOfBoards: number, numberOfStates: number) {
@@ -101,5 +102,23 @@ export class RecordingsService {
         existing[maxEntries - 1],
       );
     }
+  }
+
+  public async getLastScore(botName: string): Promise<number> {
+    const bot = await this.botsRepo.getByName(botName);
+    if (!bot) {
+      throw new NotFoundError("Bot not found");
+    }
+
+    const lastScore = await this.repo.getLastScore(bot.id);
+    if (lastScore === undefined) {
+      throw new NotFoundError("Last score not found");
+    }
+
+    return lastScore;
+  }
+
+  public async reset() {
+    this.repo.reset();
   }
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from "@nestjs/common";
+import { Controller, Get, Param, Query } from "@nestjs/common";
 import { ApiResponse, ApiTags } from "@nestjs/swagger";
 import { RecordingListDto, RecordingPublicDto } from "../models";
 import { RecordingsService } from "../services";
@@ -26,6 +26,19 @@ export class RecordingsController {
   @Get("seasons/:seasonId")
   async list(@Param("seasonId") seasonId: string): Promise<RecordingListDto[]> {
     return await this.recordingsService.allBySeasonIdList(seasonId);
+  }
+
+  @ApiResponse({
+    status: 200,
+    description: "Returns last score of a bot",
+  })
+  @ApiResponse({
+    status: 404,
+    description: "Bot name or last score not found",
+  })
+  @Get("score/last")
+  public getLastScore(@Query("botName") botName: string): Promise<number> {
+    return this.recordingsService.getLastScore(botName);
   }
 
   /**
